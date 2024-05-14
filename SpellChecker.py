@@ -1,11 +1,11 @@
-from math import log
+import math
 
 
 class SpellChecker:
     def __init__(self, path="dict.txt"):
         with open(path, "r", encoding="utf-8") as file:
             self.words = [word.split()[0] for word in file.readlines()]
-            self.word_cost = dict((word, log((i + 1) * log(len(self.words)))) for i, word in enumerate(self.words))
+            self.word_cost = dict((word, math.log((i + 1) * math.log(len(self.words)))) for i, word in enumerate(self.words))
             self.the_longest = max(len(x) for x in self.words)
             self.len_dict = dict([(i, []) for i in range(1, self.the_longest + 1)])
             for word in self.words:
@@ -32,12 +32,30 @@ class SpellChecker:
 
         return current_row[n]
 
-    def checking_gaps(self, word):
+    @staticmethod
+    def print_result(new, old, found_all):
         """
-        Проверка на лишние пробелы
+        Вывод результата
+        :param new: Исправленное слово
+        :param old: Изначальное слово
+        :param found_all: Булевский массив, который хранит True, если слово изначально написано корректно,
+        и хранит False, если слова нет в словаре, но подобрать замену ему не удалось
+        :return: Печатает в консоль результат спеллчекинга
+        """
+
+        print("Исходная строка: " + " ".join(old))
+        print("Результат: " + " ".join(new))
+        for i in range(len(new)):
+            if new[i] != old[i]:
+                print(old[i] + " -> " + new[i])
+            elif not found_all[i]:
+                print(old[i] + " -> " + "(Не удалось подобрать корректное слово)")
+
+    def check_compound_words(self, word):
+        """
+        Проверка на слитное написание слов
         :param word: слово
-        :return: исправленное слово
-        Источник: stackoverflow.com/questions/47730524/spell-check-and-return-the-corrected-term-in-python
+        :return: исправленная часть текста, если слово было слитным написанием нескольких слов
         """
 
         # Find the best match for the i first characters, assuming cost has
@@ -64,7 +82,7 @@ class SpellChecker:
 
         return " ".join(reversed(out))
 
-    def checking_for_hyphens(self, word):
+    def check_for_hyphens(self, word):
         """
         Проверка на лишний дефис
         :param word: проверяемое слово
@@ -76,25 +94,6 @@ class SpellChecker:
             if new_word not in self.words:
                 return False
         return True
-
-    @staticmethod
-    def fancy_print(new, old, found_all):
-        """
-        Вывод результата
-        :param new: Исправленное слово
-        :param old: Изначальное слово
-        :param found_all: Булевский массив, который хранит True, если слово изначально написано корректно,
-        и хранит False, если слова нет в словаре, но подобрать замену ему не удалось
-        :return: Печатает в консоль результат спеллчекинга
-        """
-
-        print("Исходная строка: " + " ".join(old))
-        print("Результат: " + " ".join(new))
-        for i in range(len(new)):
-            if new[i] != old[i]:
-                print(old[i] + " -> " + new[i])
-            elif not found_all[i]:
-                print(old[i] + " -> " + "(Не удалось подобрать корректное слово)")
 
     def spell_check(self, s, num=9e999):
         """Исправление первых num орфографических ошибок в строке s"""
@@ -129,17 +128,17 @@ class SpellChecker:
                 if possible:
                     correct[i] = possible
                     num -= 1
-                elif self.checking_for_hyphens(correct[i]):
+                elif self.check_for_hyphens(correct[i]):
                     correct[i] = correct[i].replace("-", " ")
                 else:
-                    correct[i] = self.checking_gaps(correct[i])
+                    correct[i] = self.check_compound_words(correct[i])
                     for new_w in correct[i].split():
                         if new_w not in self.words:
                             correct[i] = first_version[i]
                             found_all[i] = False
             if num == 0:
                 break
-        self.fancy_print(correct, first_version, found_all)
+        self.print_result(correct, first_version, found_all)
         return " ".join(correct)
 
 
