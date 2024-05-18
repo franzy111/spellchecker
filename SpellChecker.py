@@ -6,7 +6,8 @@ class SpellChecker:
     def __init__(self, path="dict.txt"):
         with open(path, "r", encoding="utf-8") as file:
             self.words = [word.split()[0] for word in file.readlines()]
-            self.word_cost = dict((word, math.log((i + 1) * math.log(len(self.words)))) for i, word in enumerate(self.words))
+            self.word_cost = dict((word, math.log((i + 1) * math.log(len(self.words))))
+                                  for i, word in enumerate(self.words))
             self.the_longest = max(len(x) for x in self.words)
             self.len_dict = dict([(i, []) for i in range(1, self.the_longest + 1)])
             for word in self.words:
@@ -34,23 +35,16 @@ class SpellChecker:
         return current_row[n]
 
     @staticmethod
-    def print_result(new, old, found_all):
+    def print_result(new, old):
         """
         Вывод результата
         :param new: Исправленное слово
         :param old: Изначальное слово
-        :param found_all: Булевский массив, который хранит True, если слово изначально написано корректно,
-        и хранит False, если слова нет в словаре, но подобрать замену ему не удалось
         :return: Печатает в консоль результат спеллчекинга
         """
 
-        print("Исходная строка: " + " ".join(old))
-        print("Результат: " + " ".join(new))
-        for i in range(len(new)):
-            if new[i] != old[i]:
-                print(old[i] + " -> " + new[i])
-            elif not found_all[i]:
-                print(old[i] + " -> " + "(Не удалось подобрать корректное слово)")
+        print("Исходная строка: " + old)
+        print("Результат: " + new)
 
     def check_compound_words(self, word):
         """
@@ -99,7 +93,6 @@ class SpellChecker:
     def spell_check(self, s, num=9e999):
         """Исправление первых num орфографических ошибок в строке s"""
 
-
         pattern = re.compile("[,.?/…!\"\'*–—();:«»„“1234567890\\[\\]]")
         correct = s.split()
         first_version = s.split()
@@ -144,7 +137,7 @@ class SpellChecker:
                             found_all[i] = False
             if num == 0:
                 break
-        self.print_result(correct, first_version, found_all)
+
         return " ".join(correct)
 
 

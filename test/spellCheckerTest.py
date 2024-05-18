@@ -1,6 +1,7 @@
 import unittest
 from SpellChecker import SpellChecker
 
+
 class TestSpellCheckerRussian(unittest.TestCase):
 
     def setUp(self):
