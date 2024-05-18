@@ -12,7 +12,8 @@ def main():
     args = parser.parse_args()
 
     checker = SpellChecker.SpellChecker()
-    checker.spell_check(args.text, args.number)
+    correct = checker.spell_check(args.text, args.number)
+    checker.print_result(correct, args.text)
 
 
 if __name__ == "__main__":
