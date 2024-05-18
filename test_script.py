@@ -1,7 +1,6 @@
 import unittest
 import coverage
 from termcolor import colored
-from flake8.api.legacy import get_style_guide
 
 
 if __name__ == "__main__":

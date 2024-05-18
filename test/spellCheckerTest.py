@@ -9,7 +9,7 @@ class TestSpellCheckerRussian(unittest.TestCase):
     def test_spell_check_basic(self):
         # Проверка базового использования
         input_text = "Превет мир! Это примир теста на русском языке."
-        expected_output = "Привет мир Это пример теста на русском языке "
+        expected_output = "Привет мир Это пример теста на русском языке"
         self.assertEqual(self.spl.spell_check(input_text), expected_output)
 
     def test_spell_check_no_errors(self):
