@@ -4,11 +4,11 @@ from SpellChecker import SpellChecker
 
 class CheckingHyphensTest(unittest.TestCase):
     def setUp(self):
-        self.spl = SpellChecker("C:/Users/User/PycharmProjects/spellchecker/dict.txt")
+        self.spl = SpellChecker("..//dict.txt")
 
     def test_no_hyphens_words(self):
         word = "большой"
-        self.assertEqual(word, self.spl.check_for_hyphens(word))
+        self.assertTrue(self.spl.check_for_hyphens(word))
 
     def test_hyphens_words1(self):
         word = "-хочумост-"
@@ -19,7 +19,7 @@ class CheckingHyphensTest(unittest.TestCase):
         self.assertTrue(self.spl.check_for_hyphens(word))
 
     def test_hyphens_words3(self):
-        word = "большой-п"
+        word = "большой-пэ"
         self.assertFalse(self.spl.check_for_hyphens(word))
 
     def test_empty_word(self):

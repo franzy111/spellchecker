@@ -1,4 +1,5 @@
 import math
+import re
 
 
 class SpellChecker:
@@ -98,8 +99,13 @@ class SpellChecker:
     def spell_check(self, s, num=9e999):
         """Исправление первых num орфографических ошибок в строке s"""
 
+
+        pattern = re.compile("[,.?/…!\"\'*–—();:«»„“1234567890\\[\\]]")
         correct = s.split()
         first_version = s.split()
+        for i in range(len(correct)):
+            correct[i] = re.sub(pattern, "", correct[i])
+
         found_all = [True] * len(correct)
         for i in range(len(correct)):
             found = False
@@ -144,4 +150,3 @@ class SpellChecker:
 
 if __name__ == "__main__":
     spl = SpellChecker()
-    print(spl.words)

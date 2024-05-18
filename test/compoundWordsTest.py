@@ -4,7 +4,7 @@ from SpellChecker import SpellChecker
 
 class CompoundWordsTest(unittest.TestCase):
     def setUp(self):
-        self.spl = SpellChecker("C:/Users/User/PycharmProjects/spellchecker/dict.txt")
+        self.spl = SpellChecker("..//dict.txt")
 
     def test_no_compound_words(self):
         word = "большой"
