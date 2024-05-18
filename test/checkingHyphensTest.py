@@ -4,7 +4,7 @@ from SpellChecker import SpellChecker
 
 class CheckingHyphensTest(unittest.TestCase):
     def setUp(self):
-        self.spl = SpellChecker("..//dict.txt")
+        self.spl = SpellChecker(".//dict.txt")
 
     def test_no_hyphens_words(self):
         word = "большой"
